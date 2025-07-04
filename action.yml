@@ -10,5 +10,7 @@ runs:
   using: composite
   steps:
     - name: Leyendo fichero
-      run: cat metadata/${{ inputs.country }}/${{ inputs.environment }}.yml
       shell: bash
+      run: |
+        METADATA=$(curl -SL https://raw.githubusercontent.com/midnattsol/metadata/refs/heads/main/metadata/${{ inputs.country }}/${{ inputs.environment }}.yml)
+        echo "METADATA=$METADATA" >> $GITHUB_ENV
