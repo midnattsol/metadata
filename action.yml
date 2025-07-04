@@ -13,12 +13,10 @@ runs:
       shell: bash
       run: |
         curl -sSL https://raw.githubusercontent.com/midnattsol/metadata/refs/heads/main/metadata/${{ inputs.country }}/${{ inputs.environment }}.yml | \
-        while IFS=':' read -r key value; do
-          # Quitar espacios
-          key=$(echo "$key" | xargs)
-          value=$(echo "$value" | xargs)
-          # Capitalizar clave (convertir a mayúsculas)
+        sed 's/ /%20/g'); do
+          decoded=$(echo "$line" | sed 's/%20/ /g')
+          key=$(echo "$decoded" | cut -d':' -f1 | xargs)
+          value=$(echo "$decoded" | cut -d':' -f2- | xargs)
           env_var=$(echo "$key" | tr '[:lower:]' '[:upper:]')
-          # Exportar a GitHub env
           echo "${env_var}=${value}" >> $GITHUB_ENV
         done
