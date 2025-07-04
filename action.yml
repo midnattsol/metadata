@@ -13,7 +13,6 @@ runs:
       shell: bash
       run: |
         for line in $(curl -sSL https://raw.githubusercontent.com/midnattsol/metadata/refs/heads/main/metadata/${{ inputs.country }}/${{ inputs.environment }}.yml | sed 's/ /%20/g'); do
-        sed 's/ /%20/g'); do
           decoded=$(echo "$line" | sed 's/%20/ /g')
           key=$(echo "$decoded" | cut -d':' -f1 | xargs)
           value=$(echo "$decoded" | cut -d':' -f2- | xargs)
