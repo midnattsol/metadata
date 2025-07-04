@@ -12,5 +12,13 @@ runs:
     - name: Leyendo fichero
       shell: bash
       run: |
-        METADATA=$(curl -SL https://raw.githubusercontent.com/midnattsol/metadata/refs/heads/main/metadata/${{ inputs.country }}/${{ inputs.environment }}.yml)
-        echo "METADATA=$METADATA" >> $GITHUB_ENV
+        curl -sSL https://raw.githubusercontent.com/midnattsol/metadata/refs/heads/main/metadata/${{ inputs.country }}/${{ inputs.environment }}.yml | \
+        while IFS=':' read -r key value; do
+          # Quitar espacios
+          key=$(echo "$key" | xargs)
+          value=$(echo "$value" | xargs)
+          # Capitalizar clave (convertir a mayúsculas)
+          env_var=$(echo "$key" | tr '[:lower:]' '[:upper:]')
+          # Exportar a GitHub env
+          echo "${env_var}=${value}" >> $GITHUB_ENV
+        done
