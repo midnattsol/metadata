@@ -1,0 +1,13 @@
+name: Action Test
+description: Test
+inputs:
+  country:
+    required: true
+  environment:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Leyendo fichero
+      run: cat metadata/${{ inputs.country }}/${{ inputs.environment }}.yml
