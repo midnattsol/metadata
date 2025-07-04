@@ -11,3 +11,4 @@ runs:
   steps:
     - name: Leyendo fichero
       run: cat metadata/${{ inputs.country }}/${{ inputs.environment }}.yml
+      shell: bash
